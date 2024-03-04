@@ -1,0 +1,53 @@
+const wbook = SpreadsheetApp.getActive()
+
+function doGet() {
+  const sheet = wbook.getSheetByName('2024');
+  let data = [];
+  const rlen = sheet.getLastRow();
+  const clen = sheet.getLastColumn();
+  const rows = sheet.getRange(1, 1, rlen, clen).getValues();
+  const kebutuhanMasjid = rows[1][3];
+
+  for(let i=0; i<rows.length; i++){
+    const dataRow = rows[i];
+    
+    let record = {};
+    let kebutuhan = 0;
+    for(let j=0; j<clen; j++){
+      if((rows[0][j] != '') && (rows[0][j] != 'Kebutuhan')){
+        record[rows[0][j]] = dataRow[j];
+      }
+
+      if(rows[0][j] != 'Kebutuhan'){
+        kebutuhan = dataRow[j];
+      }
+    }
+    if(i > 0 ){
+      data.push(record)
+    }
+  }
+
+  //prosentase
+  let kebutuhan = 127000000; // Rp10.000,00
+  let pemasukan = 18800000; // Rp140,00
+  let kekurangan = 108200000; // Rp9.860,00
+
+  // Hitung prosentase pemasukan
+  let prosentasePemasukan = (pemasukan / kebutuhan) * 100;
+
+  // Hitung prosentase kekurangan
+  let prosentaseKekurangan = (kekurangan / kebutuhan) * 100;
+
+  console.log("Prosentase Pemasukan: " + prosentasePemasukan.toFixed(2) + "%");
+  console.log("Prosentase Kekurangan: " + prosentaseKekurangan.toFixed(2) + "%");
+
+  const response = {
+    "data" : data,
+    'kebutuhan' : kebutuhanMasjid
+  }
+
+  // console.log(response)
+  
+  return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
+  
+}
