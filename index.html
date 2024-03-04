@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Overview Chart</title>
+    <title>Report Financial Ramadan</title>
+    <meta name="description" content="Bismillah, Berikut Data Terbaru Laporan Ramadan 2024 Masjid Ihya'ul Qulub" />
+    <meta name="keywords" content="Bismillah, berikut, data, terbaru, laporan, ramadan, 2024," />
+    <meta property="og:image" content="https://cdns.klimg.com/bola.net/i/v2/bolanet_meta_image.jpg"/>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
     <style>
@@ -58,36 +62,51 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .slot-rab,
+        .title-rab
+        {
+            display: none;
+        }
+
+        .table_all{
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>Laporan Masjid Ihya'ul Qulub Tirtasani</h2>
+        <h2>Laporan Ramadan Masjid Ihya'ul Qulub Tirtasani</h2>
+        <hr>
     </div>
 
     <div class="financial-overview">
         <!-- Tabel RAB vs Realisasi -->
-        <table>
-            <tr>
-                <th>RAB</th>
-                <th>Pemasukan</th>
-                <th>Kekurangan</th>
-            </tr>
-            <tr>
-                <td id="rab">Rp 0</td>
-                <td id="pemasukan">Rp 0</td>
-                <td id="kekurangan">Rp 0</td>
-            </tr>
-            <tr>
-                <td>Prosentase :</td>
-                <td id="prosentasePemasukan">0%</td>
-                <td id="prosentaseKekurangan">0%</td>
-            </tr>
-        </table>
+        <div class="slot-rab">
+            <table>
+                <tr>
+                    <th>RAB</th>
+                    <th>Pemasukan</th>
+                    <th>Kekurangan</th>
+                </tr>
+                <tr>
+                    <td id="rab">Rp 0</td>
+                    <td id="pemasukan">Rp 0</td>
+                    <td id="kekurangan">Rp 0</td>
+                </tr>
+                <tr>
+                    <td>Prosentase :</td>
+                    <td id="prosentasePemasukan">0%</td>
+                    <td id="prosentaseKekurangan">0%</td>
+                </tr>
+            </table>
+        </div>
+        
+        <img src="loading.gif" alt="" class="loader" style="width: 50px;">
 
         <!-- Diagram Pie -->
-        <h3>RAB VS Realisasi</h3>
+        <h3 class="title-rab">RAB VS Realisasi</h3>
         <div class="pie-chart-container">
             <canvas id="pieChart"></canvas>
         </div>
@@ -138,7 +157,6 @@
             document.querySelector('#prosentasePemasukan').innerHTML = data.prosentasePemasukan;
             document.querySelector('#prosentaseKekurangan').innerHTML = data.prosentaseKekurangan;
 
-
             // Mendapatkan referensi ke elemen tbody
             let tbody = document.getElementById("tableKeterangan").getElementsByTagName("tbody")[0];
             // Mengganti isi dari tbody dengan data yang baru
@@ -156,11 +174,9 @@
                 tbodyHTML += "</tr>";
             }
             
-            tbodyHTML += "<tr><td>Total :</td><td>Rp "+ formattedPemasukan +"</td></tr>";
+            tbodyHTML += "<tfoot><td><b>Total :</b></td><td><b>Rp "+ formattedPemasukan +"</b></td></tfoot>";
             tbody.innerHTML = tbodyHTML;
 
-            document.querySelector('.table_all').style.display = 'block';
-            
             var ctx = document.getElementById('pieChart').getContext('2d');
             var myPieChart = new Chart(ctx, {
                 type: 'pie',
@@ -200,11 +216,15 @@
                     }
                 }
             });
-            
+            document.querySelector(".loader").style.display = 'none';
+            document.querySelector('.table_all').style.display = 'block';
+            document.querySelector('.slot-rab').style.display = 'block';
+            document.querySelector('.title-rab').style.display = 'block';
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
+        
         
     </script>
 </body>
